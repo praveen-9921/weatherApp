@@ -30,7 +30,7 @@ const App = () => {
     try {
       setLoading(true);
       setError(null); // Reset error state before fetching
-      const response = await axios.get(`http://api.weatherapi.com/v1/current.json?key=08383b4889804cb9bcf161154242111&q=${city}&aqi=no`);
+      const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=c9d363731c1bc9a2332549cb43d1b2b1`);
       setWeather(response.data);
     } catch (err) {
       setError("Failed to fetch weather data. Please check the city name.");
@@ -44,6 +44,7 @@ const App = () => {
     fetchWeather();
   }
 
+
   return (
     <>
       <div className="container">
@@ -53,8 +54,8 @@ const App = () => {
               <h2 className="default_day">{dayName}</h2>
               <span className="default_date">{date} {month} {year}</span>
               <div className="icons">
-                <img src={weather ? `${weather.current.condition.icon}` : " "} alt="Weather Icon" />
-                <h2 className="weather_temp">{weather ? `${weather.current.temp_c}°C` : " "}</h2>
+                {/* <img src={weather ? `${weather.current.condition.icon}` : " "} alt="Weather Icon" /> */}
+                <h2 className="weather_temp">{weather ? `${(weather.main.temp - 273.15).toFixed(2)}°C` : " "}</h2>
                 <h3 className="cloudtxt">Overcast Clouds</h3>
               </div>
             </div>
@@ -82,15 +83,15 @@ const App = () => {
               </div>
               <div className="content">
                 <p className="title">TEMP</p>
-                <span className="value">{weather ? `${weather.current.temp_c}°C` : "Loading"}</span>
+                <span className="value">{weather ? `${(weather.main.temp - 273.15).toFixed(2)}°C` : "Loading"}</span>
               </div>
               <div className="content">
                 <p className="title">HUMIDITY</p>
-                <span className="value">{weather ? `${weather.current.humidity}%` : "Loading"}</span>
+                <span className="value">{weather ? `${weather.main.humidity}%` : "Loading"}</span>
               </div>
               <div className="content">
                 <p className="title">WIND SPEED</p>
-                <span className="value">{weather ? `${weather.current.wind_kph}km/h` : "Loading"}</span>
+                <span className="value">{weather ? `${weather.wind.speed}km/h` : "Loading"}</span>
               </div>
             </div>
           </div>
